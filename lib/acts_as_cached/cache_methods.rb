@@ -172,11 +172,11 @@ module ActsAsCached
       args << cache_options.dup unless cache_options.blank?
       send(finder, *args)
     end
-    
+
     def cache_namespace
-      cache_store(:namespace)
+      cache_store.respond_to?(:namespace) ? cache_store(:namespace) : (CACHE.instance_variable_get('@options') && CACHE.instance_variable_get('@options')[:namespace])
     end
-    
+
     # Memcache-client automatically prepends the namespace, plus a colon, onto keys, so we take that into account for the max key length.
     # Rob Sanheim
     def max_key_length
