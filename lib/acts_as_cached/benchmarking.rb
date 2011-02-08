@@ -52,7 +52,7 @@ module ActsAsCached
         alias_method_chain :set_cache,    :benchmarking
         alias_method_chain :expire_cache, :benchmarking
 
-        def logger; RAILS_DEFAULT_LOGGER end unless respond_to? :logger
+        def logger; (defined?(Rails) ? Rails.logger : RAILS_DEFAULT_LOGGER) end unless respond_to? :logger
       end
     end
   end
