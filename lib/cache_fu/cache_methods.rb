@@ -3,8 +3,11 @@ module ActsAsCached
     @@nil_sentinel = :_nil
 
     def cache_config
-      config = ActsAsCached::Config.class_config[cache_name] ||= {}
-      if name == cache_name
+      base_name = (respond_to?(:base_class) ? base_class.name : name)
+  
+      config = ActsAsCached::Config.class_config[base_name] ||= {}
+      # if name == cache_name
+      if name == base_name
         config
       else
         # sti
@@ -187,7 +190,8 @@ module ActsAsCached
     end
 
     def cache_name
-      @cache_name ||= respond_to?(:base_class) ? base_class.name : name
+      # @cache_name ||= respond_to?(:base_class) ? base_class.name : name
+      @cache_name ||= name
     end
 
     def cache_keys(*cache_ids)
