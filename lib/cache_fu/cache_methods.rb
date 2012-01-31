@@ -87,10 +87,9 @@ module ActsAsCached
     end
 
     def set_cache(cache_id, value, ttl = nil)
-      returning(value) do |v|
-        v = @@nil_sentinel if v.nil?
-        cache_store(:set, cache_key(cache_id), v, ttl || cache_config[:ttl] || 1500)
-      end
+      cache_value = value.nil? ? @@nil_sentinel : value
+      cache_store(:set, cache_key(cache_id), cache_value, ttl || cache_config[:ttl] || 1500)
+      value
     end
 
     def expire_cache(cache_id = nil)
